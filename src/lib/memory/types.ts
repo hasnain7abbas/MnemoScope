@@ -9,6 +9,7 @@ export type MemoryType =
 
 export type MemoryMetadata = {
   durationSeconds?: number;
+  audioDataUrl?: string | null;
   fileName?: string;
   fileSize?: number;
   mimeType?: string;
@@ -45,4 +46,3 @@ export function parseMetadata(memory: Memory): MemoryMetadata {
     return {};
   }
 }
-

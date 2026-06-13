@@ -4,7 +4,10 @@ import type { AppView } from "../components/layout/Sidebar";
 import { HomeView } from "../features/home/HomeView";
 import { CaptureView } from "../features/capture/CaptureView";
 import { TimelineView } from "../features/timeline/TimelineView";
+import { SearchView } from "../features/search/SearchView";
 import { useMemoryStore } from "../stores/useMemoryStore";
+import { MemoryDetailDrawer } from "../components/memory/MemoryDetailDrawer";
+import { localSummaryProvider } from "../lib/ai/localFallback";
 
 export function App() {
   const [activeView, setActiveView] = useState<AppView>("today");
@@ -14,6 +17,16 @@ export function App() {
   const saveMemory = useMemoryStore((state) => state.saveMemory);
   const selectedMemoryId = useMemoryStore((state) => state.selectedMemoryId);
   const selectMemory = useMemoryStore((state) => state.selectMemory);
+  const deleteMemory = useMemoryStore((state) => state.deleteMemory);
+  const selectedMemory =
+    memories.find((memory) => memory.id === selectedMemoryId) ?? null;
+  const relatedMemories = selectedMemory
+    ? memories.filter(
+        (memory) =>
+          memory.id !== selectedMemory.id &&
+          memory.tags.some((tag) => selectedMemory.tags.includes(tag))
+      )
+    : [];
 
   useEffect(() => {
     void initialize();
@@ -53,6 +66,8 @@ export function App() {
         onSelectMemory={selectMemory}
       />
     );
+  } else if (activeView === "search") {
+    content = <SearchView memories={memories} onOpen={selectMemory} />;
   } else {
     content = (
       <div className="view-placeholder">
@@ -64,13 +79,29 @@ export function App() {
   }
 
   return (
-    <AppShell
-      activeView={activeView}
-      onNavigate={setActiveView}
-      sidebarOpen={sidebarOpen}
-      onSidebarToggle={() => setSidebarOpen((open) => !open)}
-    >
-      {content}
-    </AppShell>
+    <>
+      <AppShell
+        activeView={activeView}
+        onNavigate={(view) => {
+          setActiveView(view);
+          if (view !== "timeline" && view !== "search") selectMemory(null);
+        }}
+        sidebarOpen={sidebarOpen}
+        onSidebarToggle={() => setSidebarOpen((open) => !open)}
+      >
+        {content}
+      </AppShell>
+      <MemoryDetailDrawer
+        memory={selectedMemory}
+        relatedMemories={relatedMemories}
+        onClose={() => selectMemory(null)}
+        onOpenRelated={selectMemory}
+        onSummarize={async (memory) => {
+          const summary = await localSummaryProvider.summarizeMemory(memory);
+          await saveMemory({ ...memory, summary });
+        }}
+        onDelete={deleteMemory}
+      />
+    </>
   );
 }
