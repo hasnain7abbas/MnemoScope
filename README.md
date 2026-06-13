@@ -126,6 +126,9 @@ src-tauri/target/release/bundle/
 The exact installer type depends on the host platform. On Windows, the current
 configuration produces NSIS and MSI packages.
 
+Prebuilt Windows 0.1.0 installers and SHA-256 checksums are also tracked in
+[`dist-installers`](./dist-installers/).
+
 ## Project Structure
 
 ```text
