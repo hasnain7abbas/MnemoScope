@@ -73,7 +73,7 @@ export function Sidebar({
           </span>
           <div>
             <strong>Local vault</strong>
-            <span>Encrypted by your device</span>
+            <span>Stays on this device</span>
           </div>
         </div>
       </div>
