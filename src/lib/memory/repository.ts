@@ -2,7 +2,11 @@ import { invoke } from "@tauri-apps/api/core";
 import { demoMemories } from "./demoData";
 import type { Memory, NewMemory } from "./types";
 
-const STORAGE_KEY = "mnemoscope.memories.v1";
+const STORAGE_KEY = "mnemoscope.memories.v2";
+
+function newestFirst(a: Memory, b: Memory) {
+  return new Date(b.capturedAt).getTime() - new Date(a.capturedAt).getTime();
+}
 
 function isTauriRuntime() {
   return "__TAURI_INTERNALS__" in window;
@@ -32,9 +36,7 @@ export const memoryRepository = {
     if (isTauriRuntime()) {
       return invoke<Memory[]>("list_memories");
     }
-    return readBrowserMemories().sort((a, b) =>
-      b.capturedAt.localeCompare(a.capturedAt)
-    );
+    return readBrowserMemories().sort(newestFirst);
   },
 
   async save(input: NewMemory): Promise<Memory> {
@@ -79,4 +81,3 @@ export const memoryRepository = {
     return "Browser local storage";
   },
 };
-

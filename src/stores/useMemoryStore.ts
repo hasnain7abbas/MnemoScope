@@ -36,8 +36,12 @@ export const useMemoryStore = create<MemoryStore>((set) => ({
   saveMemory: async (input) => {
     const saved = await memoryRepository.save(input);
     set((state) => ({
-      memories: [saved, ...state.memories.filter((item) => item.id !== saved.id)].sort(
-        (a, b) => b.capturedAt.localeCompare(a.capturedAt)
+      memories: [
+        saved,
+        ...state.memories.filter((item) => item.id !== saved.id),
+      ].sort(
+        (a, b) =>
+          new Date(b.capturedAt).getTime() - new Date(a.capturedAt).getTime()
       ),
       selectedMemoryId: saved.id,
     }));
@@ -60,4 +64,3 @@ export const useMemoryStore = create<MemoryStore>((set) => ({
 
   selectMemory: (id) => set({ selectedMemoryId: id }),
 }));
-

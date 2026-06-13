@@ -115,7 +115,7 @@ const DEMO_MEMORIES: &[(&str, &str, &str, &str, &str, &str, &[&str])] = &[
         "note",
         "A timeline is more honest than a folder. It preserves the path, not just the conclusion. The interface should leave enough quiet around each thought that the user can hear it again.",
         "A product principle for treating memory as a living sequence rather than static storage.",
-        "2026-06-13T09:42:00+05:00",
+        "2026-06-13T07:48:00+05:00",
         &["product", "principles"],
     ),
     (
@@ -124,7 +124,7 @@ const DEMO_MEMORIES: &[(&str, &str, &str, &str, &str, &str, &[&str])] = &[
         "image",
         "Warm pools of light against a quiet, near-black room. Saved as a visual reference for the memory observatory.",
         "A visual reference built around warm focus and a dark, calm environment.",
-        "2026-06-13T11:18:00+05:00",
+        "2026-06-13T09:12:00+05:00",
         &["visual", "reference"],
     ),
     (
@@ -133,7 +133,7 @@ const DEMO_MEMORIES: &[(&str, &str, &str, &str, &str, &str, &[&str])] = &[
         "code",
         "const score = exactMatch * 4 + phraseMatch * 2 + recencyBoost;\n\n// Older memories should remain discoverable when their language is precise.",
         "A ranking idea that balances exact language, phrase relevance, and recency.",
-        "2026-06-13T14:07:00+05:00",
+        "2026-06-13T10:36:00+05:00",
         &["search", "prototype"],
     ),
     (
@@ -307,7 +307,7 @@ pub fn list_memories(database: State<'_, Database>) -> Result<Vec<Memory>, Strin
             "SELECT id, title, type, content, summary, source_path, thumbnail_path,
                     created_at, updated_at, captured_at, metadata_json
              FROM memories
-             ORDER BY captured_at DESC",
+             ORDER BY julianday(captured_at) DESC",
         )
         .map_err(|error| error.to_string())?;
 
