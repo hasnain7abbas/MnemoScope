@@ -3,6 +3,7 @@ import { AppShell } from "../components/layout/AppShell";
 import type { AppView } from "../components/layout/Sidebar";
 import { HomeView } from "../features/home/HomeView";
 import { CaptureView } from "../features/capture/CaptureView";
+import { TimelineView } from "../features/timeline/TimelineView";
 import { useMemoryStore } from "../stores/useMemoryStore";
 
 export function App() {
@@ -11,6 +12,8 @@ export function App() {
   const memories = useMemoryStore((state) => state.memories);
   const initialize = useMemoryStore((state) => state.initialize);
   const saveMemory = useMemoryStore((state) => state.saveMemory);
+  const selectedMemoryId = useMemoryStore((state) => state.selectedMemoryId);
+  const selectMemory = useMemoryStore((state) => state.selectMemory);
 
   useEffect(() => {
     void initialize();
@@ -40,6 +43,14 @@ export function App() {
           await saveMemory(memory);
           setActiveView("timeline");
         }}
+      />
+    );
+  } else if (activeView === "timeline") {
+    content = (
+      <TimelineView
+        memories={memories}
+        selectedMemoryId={selectedMemoryId}
+        onSelectMemory={selectMemory}
       />
     );
   } else {
