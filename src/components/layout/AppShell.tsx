@@ -7,6 +7,7 @@ type AppShellProps = {
   onNavigate: (view: AppView) => void;
   sidebarOpen: boolean;
   onSidebarToggle: () => void;
+  memoryCount: number;
   children: ReactNode;
 };
 
@@ -24,6 +25,7 @@ export function AppShell({
   onNavigate,
   sidebarOpen,
   onSidebarToggle,
+  memoryCount,
   children,
 }: AppShellProps) {
   const navigate = (view: AppView) => {
@@ -34,7 +36,11 @@ export function AppShell({
   return (
     <div className={`app-shell${sidebarOpen ? " has-open-sidebar" : ""}`}>
       <div className="app-shell__sidebar">
-        <Sidebar activeView={activeView} onNavigate={navigate} />
+        <Sidebar
+          activeView={activeView}
+          onNavigate={navigate}
+          memoryCount={memoryCount}
+        />
       </div>
       <button
         type="button"
@@ -54,4 +60,3 @@ export function AppShell({
     </div>
   );
 }
-

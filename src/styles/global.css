@@ -26,6 +26,17 @@
   color-scheme: dark;
 }
 
+html[data-theme="obsidian"] {
+  --canvas: #030405;
+  --panel: rgba(9, 11, 13, 0.94);
+  --panel-solid: #090b0d;
+  --panel-raised: #0f1215;
+  --line: rgba(230, 239, 240, 0.09);
+  --line-strong: rgba(230, 239, 240, 0.17);
+  --cyan-soft: rgba(121, 215, 213, 0.09);
+  --amber-soft: rgba(232, 173, 101, 0.09);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -44,6 +55,16 @@ body {
   background:
     radial-gradient(circle at 72% 8%, rgba(51, 102, 108, 0.12), transparent 32%),
     var(--canvas);
+}
+
+html[data-theme="obsidian"] body {
+  background: #030405;
+}
+
+html[data-theme="obsidian"] .app-shell__sidebar,
+html[data-theme="obsidian"] .topbar,
+html[data-theme="obsidian"] .timeline-toolbar {
+  background: rgba(3, 4, 5, 0.96);
 }
 
 body::before {
@@ -868,6 +889,80 @@ textarea:focus-visible {
   font-family: "Newsreader Variable", serif;
 }
 
+.app-state {
+  display: grid;
+  min-height: calc(100vh - 72px);
+  place-content: center;
+  justify-items: center;
+  color: var(--cyan);
+  text-align: center;
+}
+
+.app-state h1 {
+  margin: 14px 0 4px;
+  color: var(--ink);
+  font-family: "Newsreader Variable", serif;
+  font-size: 28px;
+  font-weight: 430;
+}
+
+.app-state p {
+  max-width: 430px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 10px;
+}
+
+.app-state.is-error {
+  color: var(--red);
+}
+
+.app-state button,
+.empty-state button {
+  margin-top: 15px;
+  padding: 8px 11px;
+  border-radius: 6px;
+  color: var(--cyan);
+  background: var(--cyan-soft);
+  cursor: pointer;
+  font-size: 8px;
+}
+
+.empty-state {
+  display: grid;
+  min-height: 280px;
+  place-content: center;
+  justify-items: center;
+  color: var(--faint);
+  text-align: center;
+}
+
+.empty-state > span {
+  display: grid;
+  width: 50px;
+  height: 50px;
+  place-items: center;
+  border: 1px solid rgba(121, 215, 213, 0.2);
+  border-radius: 50%;
+  color: var(--cyan);
+  background: var(--cyan-soft);
+}
+
+.empty-state h2 {
+  margin: 14px 0 4px;
+  color: var(--ink);
+  font-family: "Newsreader Variable", serif;
+  font-size: 24px;
+  font-weight: 430;
+}
+
+.empty-state p {
+  max-width: 360px;
+  margin: 0;
+  color: var(--faint);
+  font-size: 9px;
+}
+
 @media (max-width: 920px) {
   :root {
     --sidebar-width: 220px;
@@ -962,6 +1057,312 @@ textarea:focus-visible {
   .quick-capture-grid {
     grid-template-columns: 1fr;
     margin-bottom: 44px;
+  }
+}
+
+.settings-view {
+  width: min(900px, 100%);
+  margin: 0 auto;
+  padding: 48px clamp(22px, 5vw, 68px) 70px;
+}
+
+.settings-view__header {
+  max-width: 620px;
+  margin-bottom: 34px;
+}
+
+.settings-view__header h1 {
+  margin: 14px 0 12px;
+  font-family: "Newsreader Variable", serif;
+  font-size: clamp(43px, 5vw, 62px);
+  font-weight: 370;
+  line-height: 0.97;
+  letter-spacing: -0.05em;
+}
+
+.settings-view__header p {
+  margin: 0;
+  color: var(--muted);
+  font-family: "Newsreader Variable", serif;
+  font-size: 15px;
+}
+
+.settings-layout {
+  display: grid;
+  gap: 11px;
+}
+
+.settings-section {
+  padding: 20px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: linear-gradient(135deg, rgba(22, 27, 32, 0.78), rgba(12, 15, 18, 0.72));
+}
+
+html[data-theme="obsidian"] .settings-section {
+  background: rgba(8, 10, 12, 0.88);
+}
+
+.settings-section__heading {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 17px;
+}
+
+.settings-section__heading > span {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  place-items: center;
+  border-radius: 8px;
+  color: var(--cyan);
+  background: var(--cyan-soft);
+}
+
+.settings-section__heading > div {
+  display: grid;
+  gap: 2px;
+}
+
+.settings-section__heading h2 {
+  margin: 0;
+  font-family: "Newsreader Variable", serif;
+  font-size: 17px;
+  font-weight: 480;
+}
+
+.settings-section__heading p {
+  margin: 0;
+  color: var(--faint);
+  font-size: 8px;
+}
+
+.theme-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.theme-options > button {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 11px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.014);
+  cursor: pointer;
+  text-align: left;
+}
+
+.theme-options > button.is-active {
+  border-color: rgba(121, 215, 213, 0.3);
+  background: var(--cyan-soft);
+}
+
+.theme-swatch {
+  display: flex;
+  align-items: end;
+  gap: 3px;
+  width: 43px;
+  height: 34px;
+  padding: 6px;
+  border-radius: 6px;
+  background: #10151a;
+}
+
+.theme-swatch.is-obsidian {
+  background: #030405;
+}
+
+.theme-swatch i {
+  width: 7px;
+  height: 16px;
+  border-radius: 2px;
+  background: #79d7d5;
+}
+
+.theme-swatch i:nth-child(2) {
+  height: 11px;
+  background: #e8ad65;
+}
+
+.theme-swatch i:nth-child(3) {
+  height: 22px;
+  background: #39464b;
+}
+
+.theme-options > button > div {
+  display: grid;
+  gap: 3px;
+}
+
+.theme-options strong {
+  font-family: "Newsreader Variable", serif;
+  font-size: 14px;
+  font-weight: 470;
+}
+
+.theme-options small {
+  color: var(--faint);
+  font-size: 7px;
+  line-height: 1.4;
+}
+
+.theme-check {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  border: 1px solid var(--line-strong);
+  border-radius: 50%;
+  color: #071012;
+}
+
+.is-active .theme-check {
+  border-color: var(--cyan);
+  background: var(--cyan);
+}
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 50px;
+  padding: 10px 0;
+  border-top: 1px solid var(--line);
+  color: var(--amber);
+}
+
+.settings-row > div {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
+
+.settings-row span {
+  color: var(--faint);
+  font-size: 7px;
+  text-transform: uppercase;
+}
+
+.settings-row strong {
+  overflow: hidden;
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-row button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  padding: 7px 9px;
+  border-radius: 6px;
+  color: var(--cyan);
+  background: var(--cyan-soft);
+  cursor: pointer;
+  font-size: 8px;
+  font-weight: 700;
+}
+
+.provider-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 11px;
+  padding: 12px;
+  border: 1px solid rgba(121, 215, 213, 0.18);
+  border-radius: 8px;
+  background: var(--cyan-soft);
+}
+
+.provider-card > span {
+  color: var(--cyan);
+}
+
+.provider-card > div {
+  display: grid;
+  gap: 3px;
+}
+
+.provider-card strong {
+  font-family: "Newsreader Variable", serif;
+  font-size: 14px;
+  font-weight: 470;
+}
+
+.provider-card small,
+.settings-note {
+  color: var(--faint);
+  font-size: 7px;
+  line-height: 1.5;
+}
+
+.provider-card i {
+  color: var(--cyan);
+  font-size: 7px;
+  font-style: normal;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.settings-note {
+  margin: 10px 0 0;
+}
+
+.settings-section--danger > button {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  color: var(--red);
+  background: rgba(231, 121, 109, 0.08);
+  cursor: pointer;
+  font-size: 8px;
+  font-weight: 750;
+}
+
+.settings-section--danger > button.is-armed {
+  color: #170706;
+  background: var(--red);
+}
+
+.settings-version {
+  display: flex;
+  justify-content: space-between;
+  padding: 18px 3px 0;
+  color: #495357;
+  font-size: 7px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 620px) {
+  .settings-view {
+    padding: 30px 14px 60px;
+  }
+
+  .theme-options {
+    grid-template-columns: 1fr;
+  }
+
+  .settings-row {
+    align-items: flex-start;
+  }
+
+  .provider-card {
+    grid-template-columns: auto 1fr;
+  }
+
+  .provider-card i {
+    grid-column: 2;
   }
 }
 

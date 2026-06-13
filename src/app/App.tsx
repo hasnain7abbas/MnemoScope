@@ -9,6 +9,9 @@ import { ProjectsView } from "../features/projects/ProjectsView";
 import { useMemoryStore } from "../stores/useMemoryStore";
 import { MemoryDetailDrawer } from "../components/memory/MemoryDetailDrawer";
 import { localSummaryProvider } from "../lib/ai/localFallback";
+import { SettingsView } from "../features/settings/SettingsView";
+import { usePreferencesStore } from "../stores/usePreferencesStore";
+import { LoaderCircle, TriangleAlert } from "lucide-react";
 
 export function App() {
   const [activeView, setActiveView] = useState<AppView>("today");
@@ -19,6 +22,10 @@ export function App() {
   const selectedMemoryId = useMemoryStore((state) => state.selectedMemoryId);
   const selectMemory = useMemoryStore((state) => state.selectMemory);
   const deleteMemory = useMemoryStore((state) => state.deleteMemory);
+  const resetDemoData = useMemoryStore((state) => state.resetDemoData);
+  const loading = useMemoryStore((state) => state.loading);
+  const error = useMemoryStore((state) => state.error);
+  const theme = usePreferencesStore((state) => state.theme);
   const selectedMemory =
     memories.find((memory) => memory.id === selectedMemoryId) ?? null;
   const relatedMemories = selectedMemory
@@ -34,6 +41,10 @@ export function App() {
   }, [initialize]);
 
   useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+  }, [theme]);
+
+  useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
@@ -46,7 +57,26 @@ export function App() {
   }, []);
 
   let content;
-  if (activeView === "today") {
+  if (loading) {
+    content = (
+      <div className="app-state">
+        <LoaderCircle className="spin" size={24} />
+        <h1>Opening the local archive</h1>
+        <p>Indexing the memory field on this device.</p>
+      </div>
+    );
+  } else if (error) {
+    content = (
+      <div className="app-state is-error">
+        <TriangleAlert size={24} />
+        <h1>The archive could not open</h1>
+        <p>{error}</p>
+        <button type="button" onClick={() => void initialize()}>
+          Try again
+        </button>
+      </div>
+    );
+  } else if (activeView === "today") {
     content = (
       <HomeView onNavigate={setActiveView} memories={memories} />
     );
@@ -71,6 +101,10 @@ export function App() {
     content = <SearchView memories={memories} onOpen={selectMemory} />;
   } else if (activeView === "projects") {
     content = <ProjectsView memories={memories} />;
+  } else if (activeView === "settings") {
+    content = (
+      <SettingsView memories={memories} onResetDemoData={resetDemoData} />
+    );
   } else {
     content = (
       <div className="view-placeholder">
@@ -91,6 +125,7 @@ export function App() {
         }}
         sidebarOpen={sidebarOpen}
         onSidebarToggle={() => setSidebarOpen((open) => !open)}
+        memoryCount={memories.length}
       >
         {content}
       </AppShell>

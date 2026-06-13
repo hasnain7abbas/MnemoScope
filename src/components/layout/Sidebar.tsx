@@ -20,6 +20,7 @@ export type AppView =
 type SidebarProps = {
   activeView: AppView;
   onNavigate: (view: AppView) => void;
+  memoryCount: number;
 };
 
 const navigation = [
@@ -30,7 +31,11 @@ const navigation = [
   { id: "projects", label: "Projects", icon: FolderKanban },
 ] satisfies Array<{ id: AppView; label: string; icon: typeof Aperture }>;
 
-export function Sidebar({ activeView, onNavigate }: SidebarProps) {
+export function Sidebar({
+  activeView,
+  onNavigate,
+  memoryCount,
+}: SidebarProps) {
   return (
     <aside className="sidebar">
       <div className="sidebar__brand">
@@ -48,7 +53,7 @@ export function Sidebar({ activeView, onNavigate }: SidebarProps) {
           >
             <Icon size={17} strokeWidth={1.7} />
             <span>{label}</span>
-            {id === "today" && <small>6</small>}
+            {id === "today" && <small>{memoryCount}</small>}
           </button>
         ))}
       </nav>
@@ -75,4 +80,3 @@ export function Sidebar({ activeView, onNavigate }: SidebarProps) {
     </aside>
   );
 }
-
