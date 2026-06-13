@@ -12,6 +12,8 @@
     "tauri": "tauri"
   },
   "dependencies": {
+    "@fontsource-variable/manrope": "^5.2.6",
+    "@fontsource-variable/newsreader": "^5.2.8",
     "@tauri-apps/api": "^2.5.0",
     "framer-motion": "^12.12.1",
     "lucide-react": "^0.511.0",

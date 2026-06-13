@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 150" fill="none">
+  <g transform="translate(5 5) scale(1.08)">
+    <circle cx="64" cy="64" r="54" stroke="#79D7D5" stroke-width="3"/>
+    <path d="M18 77C31 64 39 61 50 67C62 74 70 87 82 78C94 69 98 46 111 45" stroke="#E8AD65" stroke-width="5" stroke-linecap="round"/>
+    <path d="M36 83V46L64 69L92 46V83" stroke="#F5F0E6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="105" cy="43" r="5" fill="#E8AD65"/>
+  </g>
+  <text x="160" y="96" fill="#F5F0E6" font-family="Georgia, serif" font-size="74" letter-spacing="-3">MnemoScope</text>
+</svg>
+
