@@ -2,10 +2,17 @@ import { useEffect, useState } from "react";
 import { AppShell } from "../components/layout/AppShell";
 import type { AppView } from "../components/layout/Sidebar";
 import { HomeView } from "../features/home/HomeView";
+import { useMemoryStore } from "../stores/useMemoryStore";
 
 export function App() {
   const [activeView, setActiveView] = useState<AppView>("today");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const memories = useMemoryStore((state) => state.memories);
+  const initialize = useMemoryStore((state) => state.initialize);
+
+  useEffect(() => {
+    void initialize();
+  }, [initialize]);
 
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
@@ -21,7 +28,7 @@ export function App() {
 
   const content =
     activeView === "today" ? (
-      <HomeView onNavigate={setActiveView} />
+      <HomeView onNavigate={setActiveView} memories={memories} />
     ) : (
       <div className="view-placeholder">
         <span>Memory field / {activeView}</span>

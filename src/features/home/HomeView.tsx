@@ -10,40 +10,28 @@ import {
   Sparkles,
 } from "lucide-react";
 import { GlassPanel } from "../../components/ui/GlassPanel";
+import type { Memory, MemoryType } from "../../lib/memory/types";
 
 type HomeViewProps = {
   onNavigate: (view: "capture" | "timeline") => void;
+  memories: Memory[];
 };
 
-const recentMemories = [
-  {
-    time: "09:42",
-    type: "note",
-    icon: PenLine,
-    title: "The archive should feel alive",
-    preview:
-      "A timeline is more honest than a folder. It preserves the path, not just the conclusion.",
-    tags: ["product", "principles"],
-  },
-  {
-    time: "11:18",
-    type: "image",
-    icon: Image,
-    title: "Desk light study",
-    preview: "Warm pools of light against a quiet, near-black room.",
-    tags: ["visual", "reference"],
-  },
-  {
-    time: "14:07",
-    type: "code",
-    icon: Braces,
-    title: "Search ranking sketch",
-    preview: "Score recency beside exact phrase matches without burying older signals.",
-    tags: ["search", "prototype"],
-  },
-];
+const typeIcons: Partial<Record<MemoryType, typeof PenLine>> = {
+  note: PenLine,
+  voice: AudioLines,
+  image: Image,
+  pdf: FileText,
+  code: Braces,
+};
 
-export function HomeView({ onNavigate }: HomeViewProps) {
+export function HomeView({ onNavigate, memories = [] }: HomeViewProps) {
+  const today = "2026-06-13";
+  const todayMemories = memories.filter((memory) =>
+    memory.capturedAt.startsWith(today)
+  );
+  const recentMemories = memories.slice(0, 3);
+
   return (
     <div className="home-view">
       <motion.section
@@ -63,8 +51,8 @@ export function HomeView({ onNavigate }: HomeViewProps) {
             <em>still in motion.</em>
           </h1>
           <p>
-            Six moments entered your archive today. Replay the thread or
-            capture what is arriving now.
+            {todayMemories.length || memories.length} moments entered your archive
+            today. Replay the thread or capture what is arriving now.
           </p>
           <div className="home-hero__actions">
             <button
@@ -128,7 +116,7 @@ export function HomeView({ onNavigate }: HomeViewProps) {
 
         <div className="memory-preview-list">
           {recentMemories.map((memory, index) => {
-            const Icon = memory.icon;
+            const Icon = typeIcons[memory.memoryType] ?? FileText;
             return (
               <motion.article
                 key={memory.title}
@@ -137,18 +125,25 @@ export function HomeView({ onNavigate }: HomeViewProps) {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.15 + index * 0.08 }}
               >
-                <time>{memory.time}</time>
+                <time>
+                  {new Date(memory.capturedAt).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </time>
                 <div className="memory-preview__rail">
                   <span />
                 </div>
                 <GlassPanel className="memory-preview__card">
-                  <div className={`memory-preview__icon is-${memory.type}`}>
+                  <div
+                    className={`memory-preview__icon is-${memory.memoryType}`}
+                  >
                     <Icon size={17} />
                   </div>
                   <div className="memory-preview__body">
-                    <span>{memory.type}</span>
+                    <span>{memory.memoryType}</span>
                     <h3>{memory.title}</h3>
-                    <p>{memory.preview}</p>
+                    <p>{memory.summary || memory.content}</p>
                     <div className="tag-row">
                       {memory.tags.map((tag) => (
                         <span key={tag}>#{tag}</span>
@@ -178,4 +173,3 @@ export function HomeView({ onNavigate }: HomeViewProps) {
     </div>
   );
 }
-
