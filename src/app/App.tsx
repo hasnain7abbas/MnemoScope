@@ -5,6 +5,7 @@ import { HomeView } from "../features/home/HomeView";
 import { CaptureView } from "../features/capture/CaptureView";
 import { TimelineView } from "../features/timeline/TimelineView";
 import { SearchView } from "../features/search/SearchView";
+import { ProjectsView } from "../features/projects/ProjectsView";
 import { useMemoryStore } from "../stores/useMemoryStore";
 import { MemoryDetailDrawer } from "../components/memory/MemoryDetailDrawer";
 import { localSummaryProvider } from "../lib/ai/localFallback";
@@ -68,6 +69,8 @@ export function App() {
     );
   } else if (activeView === "search") {
     content = <SearchView memories={memories} onOpen={selectMemory} />;
+  } else if (activeView === "projects") {
+    content = <ProjectsView memories={memories} />;
   } else {
     content = (
       <div className="view-placeholder">
