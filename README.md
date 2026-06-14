@@ -7,6 +7,9 @@
 A cinematic, local-first memory timeline for notes, screenshots, voice thoughts,
 PDFs, code snippets, and the half-formed ideas that deserve another look.
 
+[**Open the web preview**](https://hasnain7abbas.github.io/MnemoScope/) ·
+[**Download for Windows**](https://github.com/hasnain7abbas/MnemoScope/releases/latest)
+
 </div>
 
 ---
@@ -92,6 +95,9 @@ npm run dev
 The browser preview opens at `http://localhost:1420`. It uses browser local
 storage so the main workflows remain testable without launching the native
 shell.
+
+The hosted preview is available at
+[hasnain7abbas.github.io/MnemoScope](https://hasnain7abbas.github.io/MnemoScope/).
 
 To run the desktop application:
 

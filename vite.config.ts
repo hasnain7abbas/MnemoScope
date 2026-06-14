@@ -5,6 +5,7 @@ const host = process.env.TAURI_DEV_HOST;
 
 export default defineConfig({
   plugins: [react()],
+  base: process.env.VITE_BASE_PATH || "/",
   clearScreen: false,
   server: {
     port: 1420,
@@ -22,4 +23,3 @@ export default defineConfig({
     },
   },
 });
-
