@@ -135,6 +135,20 @@ configuration produces NSIS and MSI packages.
 Prebuilt Windows 0.1.0 installers and SHA-256 checksums are also tracked in
 [`dist-installers`](./dist-installers/).
 
+## Windows Downloads
+
+The recommended download is the NSIS setup executable from the
+[latest GitHub Release](https://github.com/hasnain7abbas/MnemoScope/releases/latest).
+
+| Package | Use |
+| :--- | :--- |
+| `MnemoScope_0.1.0_x64-setup.exe` | Standard Windows installation |
+| `MnemoScope_0.1.0_x64_en-US.msi` | Managed or administrative deployment |
+| `SHA256SUMS.txt` | Download integrity verification |
+
+Tagged releases are rebuilt and published by
+`.github/workflows/release.yml`.
+
 ## Project Structure
 
 ```text
